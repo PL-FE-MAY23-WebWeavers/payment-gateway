@@ -5,14 +5,21 @@ import { apiServices } from '../service/api.services';
 const stripeKey = process.env.STRIPE_TEST_KEY;
 const stripe = require('stripe')(stripeKey);
 
-const BASE_URL = process.env.STRIPE_URL;
+const BASE_URL = process.env.DATABASE_URL;
 const frontUrl = process.env.CLIENT_URL;
 export const products = async () => {
   try {
     const all = await apiServices.getAll();
     if (all) {
       all.forEach(
-        async (product) =>
+        async (product: {
+          itemId: any;
+          createdAt: any;
+          price: any;
+          image: string | number;
+          name: any;
+          phoneId: any;
+        }) =>
           // async (product) => await stripe.products.del(product.phoneId)
           await stripe.products.del({
             id: product.itemId,
